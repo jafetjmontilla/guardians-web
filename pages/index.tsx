@@ -1,118 +1,141 @@
+import '@vidstack/react/player/styles/base.css';
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react';
+import { isHLSProvider, MediaPlayer, MediaProvider, ScreenOrientationLockType, MediaCanPlayDetail, MediaCanPlayEvent, MediaProviderAdapter, MediaProviderChangeEvent } from '@vidstack/react';
+import { Channel, channelsList } from "../utils/channels"
+
+interface MyScreenOrientation extends ScreenOrientation {
+  lock(orientation: ScreenOrientationLockType): Promise<void>;
+}
+
 
 const inter = Inter({ subsets: ['latin'] })
-
 export default function Home() {
+  const router = useRouter()
+  const [showVideo, setShowVideo] = useState<boolean>(false)
+  const [channel, setChannel] = useState<Channel>(channelsList[3])
+  // let player = useRef<MediaPlayerInstance>(null);
+
+  function onProviderChange(
+    provider: MediaProviderAdapter | null,
+    nativeEvent: MediaProviderChangeEvent,
+  ) {
+    // We can configure provider's here.
+    if (isHLSProvider(provider)) {
+      provider.config = {};
+    }
+  }
+
+  // // We can listen for the `can-play` event to be notified when the player is ready.
+  function onCanPlay(detail: MediaCanPlayDetail, nativeEvent: MediaCanPlayEvent) {
+    console.log(10001, detail)
+    // ...
+  }
+
+  useEffect(() => {
+    const handlePopstate = () => {
+      console.log('El usuario presionó el botón de volver');
+      alert("algo1")
+      // Aquí puedes agregar la lógica que deseas ejecutar
+    };
+    const handleFull = (e: any) => {
+      if (!document.fullscreenElement) {
+        const video: HTMLVideoElement | null = document.querySelector("video")
+        if (video) {
+          video.muted = true
+        }
+        setChannel({ id: 0, title: "", logo: "", src: "" })
+        setShowVideo(false)
+      }
+      // Aquí puedes agregar la lógica que deseas ejecutar
+    };
+    // Agrega el evento al cargar el componente
+    window.addEventListener('popstate', handlePopstate);
+    window.addEventListener('fullscreenchange', handleFull);
+    // Limpia el evento al desmontar el componente
+    return () => {
+      window.removeEventListener('popstate', handlePopstate);
+      window.removeEventListener('fullscreenchange', handleFull);
+    };
+  }, []);
+
+  const handleSwithOn = () => {
+    //setChannel(channel.src)
+    setTimeout(() => {
+      setShowVideo(true)
+      setChannel(channelsList[3])
+      setTimeout(() => {
+        const video: HTMLVideoElement | null = document.querySelector("video")
+        const container: any | null = document.getElementById("mediaplayer")
+        if (video) {
+          console.log("-------------->", 544411)
+          video.muted = false
+          video.volume = 0.5
+          console.log(video?.volume)
+          if (container?.requestFullscreen) {
+            container?.requestFullscreen({ navigationUI: "hide" });
+            (screen.orientation as MyScreenOrientation).lock('landscape')
+              .then()
+              .catch((error: any) =>
+                console.log(10004, error)
+              )
+          }
+        }
+      }, 100);
+    }, 100)
+    setTimeout(() => {
+      setChannel(channelsList[11])
+      const video: HTMLVideoElement | null = document.querySelector("video")
+      setTimeout(() => {
+        if (video) {
+          video.muted = false
+        }
+      }, 100);
+    }, 4000);
+  }
+
+  useEffect(() => {
+    console.log("-------------->", { channel })
+  }, [showVideo])
+
+
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <main className={`bg-black flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}    >
+      <div onClick={handleSwithOn} className="w-10 h-10 bg-red-400">
+        hola  mundo
+      </div>
+      <Image style={{ objectFit: 'cover' }} height={40} width={100} alt={channel.title} src={channel.logo} />
+      <div className={`w-[400] bg-red`}>
+        {/* <button className='w-10 h-4 bg-green-300 text-white' type='button' onClick={handleSwithOn}>sound</button> */}
+        <div className=' w-[400px]'>
+          <MediaPlayer
+            id='mediaplayer'
+            muted={true}
+            autoPlay={true}
+            className={`${!showVideo && "!hidden"} aspect-video bg-slate-900 text-white font-sans overflow-hidden rounded-md ring-media-focus data-[focus]:ring-4`}
+            // title="Sprite Fight"
+            src={[{ src: channel.src }]}
+            crossOrigin={true}
+            playsInline={true}
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+            <MediaProvider />
+
+          </MediaPlayer>
         </div>
+        <style>{`
+      video::-webkit-media-controls {
+        display: none;
+      }
+      video::-webkit-media-controls-start-playback-button {
+        display: none;
+      }
+      video::-webkit-media-controls-overlay-play-button {
+        display: none !important;
+      }
+      `}</style>
       </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </main >
   )
 }
