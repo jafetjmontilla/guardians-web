@@ -1,0 +1,39 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.polygon {
+  width: 0;
+  height: 0;
+  border-left: 0px solid transparent;
+  border-right: 180vw solid transparent;
+  border-bottom: 950px solid var(--color-animation);
+  position: absolute;
+  top: 0;
+  transform: translateX(-30%) translatey(-210%) rotate(24deg);
+  animation: movePolygon 2000ms cubic-bezier(0.54, 0, 0.20, 1) forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes movePolygon {
+  0% {
+    top: 0;
+    border-bottom: 950px solid var(--color-animation);
+    transform: translateX(-30%) translatey(-140%) rotate(18deg);
+  }
+
+  99% {
+    top: 100%;
+    border-bottom: 50px solid var(--color-animation);
+    transform: translateX(-0%) translatey(-0%) rotate(0deg);
+  }
+
+  100% {
+    top: 100%;
+    border-bottom: 0px solid var(--color-animation);
+    transform: translateX(-0%) translatey(-0%) rotate(0deg);
+    display: none;
+  }
+}

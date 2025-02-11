@@ -6,7 +6,8 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className='bg-black w-screen h-screen'>
       <Head>
-        <title>4net TV</title>
+        <link id="favicon" rel="icon" href="/favicon_white.png" />
+        <title>Guardians Esports</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </Head>
