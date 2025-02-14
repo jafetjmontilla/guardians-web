@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { PolygonAnimation } from "@/components/PolygonAnimation";
-import { Prueba } from "@/components/Prueba";
+import { Prueba } from "@/components/LogoAnimation";
 
 
 export default function Home() {
