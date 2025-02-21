@@ -1,5 +1,6 @@
 import { ChangeEvent, DetailedHTMLProps, FC, HTMLAttributes, useEffect, useState } from "react"
 
+
 interface Props {
   value: string
   className?: string;
@@ -14,6 +15,6 @@ export const InputBasic: FC<Props> = (props) => {
   };
 
   return (
-    <input onChange={handleChange} value={value} type="email" placeholder="tu ejemplo" className={` ${props.className}`} />
+    <input onChange={handleChange} value={value} type="string" placeholder="no hay luna" className={` ${props.className}`} />
   )
 }
