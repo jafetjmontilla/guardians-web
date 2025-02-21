@@ -4,11 +4,6 @@ import styles from './PolygonAnimation.module.css';
 export const PolygonAnimation = () => {
   const [randomColor, setRandomColor] = useState<string>()
 
-  // console.log(Math.random())
-  // console.log(Math.floor(Math.random() * 4))
-
-
-  
   useEffect(() => {
     const colors = ['#2e6dfc', '#2dd383', '#2db2d3', '#97d32d'];
     const idx = Math.floor(Math.random() * colors.length)

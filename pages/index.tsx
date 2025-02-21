@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { PolygonAnimation } from "@/components/PolygonAnimation";
-import { Prueba } from "@/components/LogoAnimation";
-
+import { LogoAnimation } from "@/components/LogoAnimation";
 
 export default function Home() {
 
@@ -16,7 +15,7 @@ export default function Home() {
           exit={{ opacity: 0, transition: { duration: 0.2 } }}
           className='absolute m-auto'
         >
-          <Prueba />
+          <LogoAnimation />
         </motion.div>}
       </AnimatePresence>
     </main >
