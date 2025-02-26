@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from './PolygonAnimation.module.css';
 
+
 export const PolygonAnimation = () => {
   const [randomColor, setRandomColor] = useState<string>()
 
