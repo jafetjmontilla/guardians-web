@@ -24,7 +24,9 @@ console.log (props.image)
         onMouseLeave={() => setHover(false)}
         className={`flex justify-center items-center ${props.className}`}  >
         <div className={`bg-white rounded-2xl relative transition-width transition-height duration-500 ease-linear w-full h-full ${props.hover}`}>
-          <img src={props.image}/> 
+          <img src={props.image} className="w-full h-full object-cover rounded-2xl transition-all duration-300"/> 
+          
+
           <div className={`absolute ${!props?.labelPosition
             ? "left-0 bottom-0 flex items-end"
             : props.labelPosition == "tr"
@@ -65,7 +67,7 @@ console.log (props.image)
                       ? "rounded-tl-2xl" :
                       "rounded-tr-2xl"
                 }`}>
-                <span className={`transition-text duration-500 ease-linear text-white p-4 text-sm ${hover && "*scale-110 text-xl text-orange-400"}`}>
+                <span className={`transition-text duration-500 ease-linear text-white p-4 text-sm ${hover && "text-xl text-blue-500"}`}>
                   {props.label}
                 </span>
               </div>
