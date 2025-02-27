@@ -1,18 +1,20 @@
+import Image from "next/image"
 import { DetailedHTMLProps, FC, HTMLAttributes, useState } from "react"
 
-type asd = "tl" | "tr" | "bl" | "br"
+type position = "tl" | "tr" | "bl" | "br"
 
 interface Props {
   label?: string
   className?: string
   hover?: string
-  labelPosition?: asd
+  labelPosition?: position
+  image: string
 }
 
 export const ImageComponets: FC<Props> = (props) => {
   const [hover, setHover] = useState(false)
 
-
+console.log (props.image)
 
   const size = 16
   return (
@@ -22,6 +24,7 @@ export const ImageComponets: FC<Props> = (props) => {
         onMouseLeave={() => setHover(false)}
         className={`flex justify-center items-center ${props.className}`}  >
         <div className={`bg-white rounded-2xl relative transition-width transition-height duration-500 ease-linear w-full h-full ${props.hover}`}>
+          <img src={props.image}/> 
           <div className={`absolute ${!props?.labelPosition
             ? "left-0 bottom-0 flex items-end"
             : props.labelPosition == "tr"
