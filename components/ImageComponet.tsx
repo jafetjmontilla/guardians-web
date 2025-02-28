@@ -14,7 +14,7 @@ interface Props {
 export const ImageComponets: FC<Props> = (props) => {
   const [hover, setHover] = useState(false)
 
-console.log (props.image)
+  console.log(props.image)
 
   const size = 16
   return (
@@ -23,9 +23,18 @@ console.log (props.image)
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         className={`flex justify-center items-center ${props.className}`}  >
-        <div className={`bg-white rounded-2xl relative transition-width transition-height duration-500 ease-linear w-full h-full ${props.hover}`}>
-          <img src={props.image} className="w-full h-full object-cover rounded-2xl transition-all duration-300"/> 
-          
+        <div className={`bg-white rounded-2xl relative transition-width transition-height duration-500 ease-linear w-full h-full overflow-hidden cursor-pointer ${props.hover} ${!props?.labelPosition
+          ? "rounded-bl-none"
+          : props.labelPosition == "tr"
+            ? "rounded-tr-none"
+            : props.labelPosition == "tl"
+              ? "rounded-tl-none"
+              : props.labelPosition == "br"
+                ? "rounded-br-none"
+                : "rounded-bl-none"
+          }`}>
+          <img src={props.image} className="w-full h-full object-cover" />
+
 
           <div className={`absolute ${!props?.labelPosition
             ? "left-0 bottom-0 flex items-end"
@@ -34,8 +43,8 @@ console.log (props.image)
               : props.labelPosition == "tl"
                 ? "top-0 left-0"
                 : props.labelPosition == "br"
-                  ? "bottom-0 right-0 flex-row-reverse items-end" :
-                  "bottom-0 right-0 flex items-end"
+                  ? "bottom-0 right-0 flex-row-reverse items-end"
+                  : "bottom-0 right-0 flex items-end"
             }  flex  `}>
             <div className={`flex  ${!props?.labelPosition
               ? "flex-col"
@@ -44,8 +53,8 @@ console.log (props.image)
                 : props.labelPosition == "tl"
                   ? "flex-col-reverse"
                   : props.labelPosition == "br"
-                    ? "items-end flex-col" :
-                    "flex-col"
+                    ? "items-end flex-col"
+                    : "flex-col"
               }`}>
               <div className={`bg-black triangle-curved ${!props?.labelPosition
                 ? "rotate-90"
@@ -54,8 +63,8 @@ console.log (props.image)
                   : props.labelPosition == "tl"
                     ? "rotate-180"
                     : props.labelPosition == "br"
-                      ? "" :
-                      "rotate-90"
+                      ? ""
+                      : "rotate-90"
                 }`} />
               <div className={`bg-black *w-[100px] *h-[50px] transition-width transition-height duration-500 ease-linear flex items-center justify-center ${hover && "*w-[120px] *h-[60px]"} ${!props?.labelPosition
                 ? "rounded-tr-2xl"
@@ -64,8 +73,8 @@ console.log (props.image)
                   : props.labelPosition == "tl"
                     ? "rounded-br-2xl"
                     : props.labelPosition == "br"
-                      ? "rounded-tl-2xl" :
-                      "rounded-tr-2xl"
+                      ? "rounded-tl-2xl"
+                      : "rounded-tr-2xl"
                 }`}>
                 <span className={`transition-text duration-500 ease-linear text-white p-4 text-sm ${hover && "text-xl text-blue-500"}`}>
                   {props.label}
@@ -79,8 +88,8 @@ console.log (props.image)
                 : props.labelPosition == "tl"
                   ? "rotate-180"
                   : props.labelPosition == "br"
-                    ? "" :
-                    "rotate-90"
+                    ? ""
+                    : "rotate-90"
               }`} />
           </div>
         </div>
