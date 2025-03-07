@@ -1,93 +1,96 @@
-import Image from "next/image"
-import { DetailedHTMLProps, FC, HTMLAttributes, useState } from "react"
+import { FC, useState } from "react"
 
-type position = "tl" | "tr" | "bl" | "br"
+export type position = "tl" | "tr" | "bl" | "br"
 
-interface Props {
-  label?: string
-  className?: string
-  hover?: string
-  labelPosition?: position
-  image: string
+export interface BancoImagen {
+  categoria: string
+  id: string
+  label: string
+  labelPosition: position,
+  imageUrl: string
 }
 
-export const ImageComponets: FC<Props> = (props) => {
-  const [hover, setHover] = useState(false)
+interface Props {
+  item: BancoImagen
+  className?: string
+  hover?: string
+}
 
-  console.log(props.image)
+export const ImageComponets: FC<Props> = ({ item, className = "w-full h-full", hover = "hover:w-[95%] hover:h-[95%]" }) => {
+  const [isHover, setIsHover] = useState(false)
 
   const size = 16
   return (
     <>
       <div
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-        className={`flex justify-center items-center ${props.className}`}  >
-        <div className={`bg-white rounded-2xl relative transition-width transition-height duration-500 ease-linear w-full h-full overflow-hidden cursor-pointer ${props.hover} ${!props?.labelPosition
+        onMouseEnter={() => setIsHover(true)}
+        onMouseLeave={() => setIsHover(false)}
+        className={`flex justify-center items-center ${className}`}  >
+        <div className={`bg-white rounded-2xl relative transition-width transition-height duration-500 ease-linear w-full h-full overflow-hidden cursor-pointer ${hover} ${!item?.labelPosition
           ? "rounded-bl-none"
-          : props.labelPosition == "tr"
+          : item?.labelPosition == "tr"
             ? "rounded-tr-none"
-            : props.labelPosition == "tl"
+            : item?.labelPosition == "tl"
               ? "rounded-tl-none"
-              : props.labelPosition == "br"
+              : item?.labelPosition == "br"
                 ? "rounded-br-none"
                 : "rounded-bl-none"
           }`}>
-          <img src={props.image} className="w-full h-full object-cover" />
+          <img src={item?.imageUrl} className="w-full h-full object-cover" />
 
 
-          <div className={`absolute ${!props?.labelPosition
+          <div className={`absolute ${!item?.labelPosition
             ? "left-0 bottom-0 flex items-end"
-            : props.labelPosition == "tr"
+            : item?.labelPosition == "tr"
               ? "top-0 right-0 flex-row-reverse"
-              : props.labelPosition == "tl"
+              : item?.labelPosition == "tl"
                 ? "top-0 left-0"
-                : props.labelPosition == "br"
+                : item?.labelPosition == "br"
                   ? "bottom-0 right-0 flex-row-reverse items-end"
-                  : "bottom-0 right-0 flex items-end"
+                  : "bottom-0 left-0 flex items-end"
             }  flex  `}>
-            <div className={`flex  ${!props?.labelPosition
+            <div className={`flex  ${!item?.labelPosition
               ? "flex-col"
-              : props.labelPosition == "tr"
+              : item?.labelPosition == "tr"
                 ? "items-end flex-col-reverse"
-                : props.labelPosition == "tl"
+                : item?.labelPosition == "tl"
                   ? "flex-col-reverse"
-                  : props.labelPosition == "br"
+                  : item?.labelPosition == "br"
                     ? "items-end flex-col"
                     : "flex-col"
               }`}>
-              <div className={`bg-black triangle-curved ${!props?.labelPosition
+              <div className={`bg-black triangle-curved ${!item?.labelPosition
                 ? "rotate-90"
-                : props.labelPosition == "tr"
+                : item?.labelPosition == "tr"
                   ? "-rotate-90"
-                  : props.labelPosition == "tl"
+                  : item?.labelPosition == "tl"
                     ? "rotate-180"
-                    : props.labelPosition == "br"
+                    : item?.labelPosition == "br"
                       ? ""
                       : "rotate-90"
                 }`} />
-              <div className={`bg-black *w-[100px] *h-[50px] transition-width transition-height duration-500 ease-linear flex items-center justify-center ${hover && "*w-[120px] *h-[60px]"} ${!props?.labelPosition
+              <div className={`bg-black *w-[100px] *h-[50px] transition-width transition-height duration-500 ease-linear flex items-center justify-center ${isHover && "*w-[120px] *h-[60px]"} ${!item?.labelPosition
                 ? "rounded-tr-2xl"
-                : props.labelPosition == "tr"
+                : item?.labelPosition == "tr"
                   ? "rounded-bl-2xl"
-                  : props.labelPosition == "tl"
+                  : item?.labelPosition == "tl"
                     ? "rounded-br-2xl"
-                    : props.labelPosition == "br"
+                    : item?.labelPosition == "br"
                       ? "rounded-tl-2xl"
                       : "rounded-tr-2xl"
                 }`}>
-                <span className={`transition-text duration-500 ease-linear text-white p-4 text-sm ${hover && "text-xl text-blue-500"}`}>
-                  {props.label}
+                <span className={`transition-text duration-500 ease-linear text-white p-4 text-sm ${isHover && "text-xl text-blue-500"}`}>
+                  {item?.label}
                 </span>
               </div>
             </div>
-            <div className={`bg-black triangle-curved ${!props?.labelPosition
+            <div className={`bg-black triangle-curved ${!item?.labelPosition
               ? "rotate-90"
-              : props.labelPosition == "tr"
+              : item?.labelPosition == "tr"
                 ? "-rotate-90"
-                : props.labelPosition == "tl"
+                : item?.labelPosition == "tl"
                   ? "rotate-180"
-                  : props.labelPosition == "br"
+                  : item?.labelPosition == "br"
                     ? ""
                     : "rotate-90"
               }`} />
