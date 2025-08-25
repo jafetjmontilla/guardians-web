@@ -56,3 +56,17 @@ console.log(asdConString)
 const resp = borde + "\n" + aqui + borde
 
 console.log(resp)
+
+/*
+
+file:///root/api-bodas/db/funcionesStripe.js:52
+              const productsName = await Promise.all(productsIds.map(async (elem) => {
+                                                                 ^
+
+TypeError: Cannot read properties of undefined (reading 'map')
+    at Timeout._onTimeout (file:///root/api-bodas/db/funcionesStripe.js:52:66)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+Node.js v21.1.0
+
+*/
